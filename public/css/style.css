@@ -1,0 +1,164 @@
+:root{
+    --background: #131214;  
+    --surface: #1D1C1F;
+    --on-surface: #DDDAE5;
+    --black-alpha-10: hsla(0, 0%, 0%, 0.1);
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: var(--background);
+    color: white;
+}
+
+
+.card{
+    background-color: var(--surface);
+    color: var(--on-surface);
+    border-radius: 30px;
+}
+
+
+.w-icon{
+    font-size: 5rem;
+}
+
+
+.cont {
+    display: flex;
+}
+  
+.day1, .day2, .day3, .day4, .day5 {
+    flex: 1;
+}
+
+ul, li{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.back{
+    background-color: var(--black-alpha-10);
+    border-radius: 30px;
+}
+
+
+.card-item-day{
+    background-color: var(--surface);
+    color: var(--on-surface);
+    border-radius: 30px;
+    height: 100%;
+    width: 100%;
+    margin: 5px;
+}
+
+.icon_size{
+    width: 70px;
+    height: 70px;
+}
+
+.icon_mini{
+    width: 50px;
+    height: 50px;
+}
+
+#map {
+    height: 400px;
+}
+
+.map-container {
+    margin-top: 20px;
+}
+
+
+
+.navbar-brand {
+    margin-right: 10px;
+}
+
+.navbar-toggler {
+    color: white;
+}
+
+.main {
+    padding: 20px;
+}
+
+.col-3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.col-9 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 576px) {
+
+    .col-3 {
+        flex: 0 0 30%;
+        max-width: 30%;
+    }
+
+    .col-9 {
+        flex: 0 0 70%;
+        max-width: 70%;
+    }
+
+    
+}
+
+
+@media (min-width: 577px) {
+    
+
+    #times{
+        display: flex;
+        justify-content: space-between;
+    }
+    #airQua{
+        display: flex;
+        justify-content: space-between;
+    
+    }
+}
+
+@media (min-width: 460px) {
+    
+    #airQua{
+        display: flex;
+        justify-content: space-between;
+    
+    }
+}
+
+@media (min-width: 1182px) {
+    .wrapper {
+        display: flex;
+    }
+}
+
+#loadingIndicator{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+}
+
+.loader {
+    border: 8px solid #3498db;
+    border-top: 8px solid #f0f0f0;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

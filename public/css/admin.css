@@ -1,0 +1,60 @@
+:root{
+    --background: #131214;  
+    --surface: #1D1C1F;
+    --on-surface: #DDDAE5;
+    --black-alpha-10: hsla(0, 0%, 0%, 0.1);
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: var(--background);
+    color: white;
+}
+
+
+.modal-content{
+    background-color: var(--surface);
+}
+
+label, input{
+    margin-bottom: 5px;
+}
+
+/* .container.table table {
+    background-color: var(--surface);
+} */
+
+#userCont {
+    max-width: 800px; /* Максимальная ширина контейнера */
+    margin: 20px auto; /* Центрирование контейнера */
+    padding: 20px; /* Внутренний отступ контейнера */
+    background-color: var(--surface); /* Цвет фона контейнера */
+    border-radius: 10px; /* Скругление углов контейнера */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Тень контейнера */
+}
+
+table {
+    width: 100%; /* Ширина таблицы */
+    border-collapse: collapse; /* Схлопывание границ ячеек */
+    margin-top: 20px; /* Внешний отступ сверху */
+}
+
+th,  td {
+    padding: 10px; /* Внутренний отступ ячеек */
+    border-bottom: 1px solid #ddd; /* Горизонтальная линия разделения ячеек */
+}
+
+table th {
+    background-color: var(--surface); /* Цвет фона ячеек заголовка */
+}
+
+
+.btn {
+    padding: 8px 16px; /* Внутренний отступ кнопки */
+    border: none; /* Убираем границы кнопки */
+    cursor: pointer; /* Изменение курсора при наведении */
+    border-radius: 4px; /* Скругление углов кнопки */
+}
+

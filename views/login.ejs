@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            
+            background-color: #2d2c31;
+            margin-top: 100px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 95%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        p {
+            text-align: center;
+            color: rgb(255, 255, 255);
+        }
+
+        p a {
+            color: #2ecc71;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #2ecc71;
+            color: #fff;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        #successModal {
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 25%;
+            border-radius: 10px;
+            position: relative;
+        }  
+        
+    
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Login</h1>
+        <form action="/login" method="post">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="username" placeholder="Enter your name..." required autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" placeholder="password..." required>
+            </div>
+            <button type="submit">Login</button>
+            <p>Don't have an account? <a href="/signup">Sign up</a></p>
+        </form>
+
+        <% if (message) { %>
+            <div id="successModal" class="modal">
+                <div class="modal-content">
+                    <p style="font-size: 1.5em;">Account created successfully!</p>
+                    <button id="closeModal">Close</button>
+                </div>
+            </div>
+        <% } %>
+    </div>
+    
+
+    <script>
+        let modal = document.getElementById('successModal');
+        let btn = document.getElementById("closeModal");
+        btn.onclick = function() {
+            modal.style.display = "none";
+        }
+    </script>
+        
+   
+</body>
+</html>

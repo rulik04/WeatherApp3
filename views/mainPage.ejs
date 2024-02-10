@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <style>
+        /* body{
+            background-color: #131214;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            color: white;
+
+        }
+        h1 {
+            margin-top: 50px;
+        }
+
+        #forms {
+            margin-top: 50px;
+            background-color: #1D1C1F;
+            padding: 20px;  
+            border-radius: 10px; 
+            color: white;   
+        }
+
+        input {
+            padding: 5px;
+            margin: 10px;
+        }
+
+        button {
+            padding: 5px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            width: 100%;
+        }
+
+        .card{
+            background-color: #1D1C1F;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            margin: 10px;
+            padding: 10px;
+        }
+        .card-item {
+            display: flex;
+            padding: 10px;
+            width: 150px;
+            height: 100px;
+        }
+       
+        #historyCont{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .icon_size{
+            width: 70px;
+            height: 70px;
+        }
+        .bi-arrow-right {
+            color: green;
+        } */
+
+
+        body{
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--background);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh
+        }
+        main {
+            flex: 1; 
+        }
+
+        footer {
+            margin-top: auto;
+        }
+        #main {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+
+        }
+        #historyCont{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card{
+            background-color: #1D1C1F;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            margin: 10px;
+            padding: 10px;
+        }
+        .card-item {
+            display: flex;
+            padding: 10px;
+            width: 150px;
+            height: 100px;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="container-fluid mb-5 mt-2">
+        <div class="">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <!-- <a class="navbar-brand text-white" href="#">ClimaCast</a> -->
+                    <img src="img/1705659220614eplinmpv.jpg" alt="" style="width: 70px; height: 70px; border-radius: 5px;">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon text-white"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active text-white fs-3" aria-current="page" href="#">ClimaCast</a>
+                            </li>
+                        </ul>
+                        <form class="d-flex" action="/weather" method="post" id="formCityName">
+                            <input class="form-control me-2" type="text" placeholder="City name..." name="city" aria-label="Search" id="cityName">
+                            <button class="btn btn-outline-success text-white" type="submit">Get Weather</button>
+                        </form>
+                        <% if (user == "noLogin") { %>
+                            <form action="/login" method="get" class="ms-2">
+                                <button class="btn btn-outline-primary text-white" type="submit">Login</button>
+                            </form>
+                        <% } else { %>
+                            
+                            <form action="/logout" method="post" class="ms-2 d-flex align-items-center"> 
+                                <p class="mt-3 me-3"><%= username.username%></p>
+                                <button class="btn btn-outline-danger text-white h-100" type="submit">Logout</button>
+                            </form>
+                        <% } %>
+                        
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+
+    <main>
+        <% if (user == "noLogin") { %>
+            <h1 class="text-center">Please log in or register to access additional features.</h1>
+        <% } else { %>
+            <div id="main">
+                <div>
+                    <!-- <h1>Welcome to the Main Page</h1> -->
+                    
+                    <h2>Your history</h2>
+                    <ul id="historyCont">
+                        <% for (let i = 0; i < user.length; i++) { %>
+                            <% let data = user[i].timezone.timestamp %>
+                            <li class="card" data-history="<%= data%>">
+                                <div class="position-relative">
+                                    <p><%= user[i].city %></p>
+                                    <a href="/weather/<%= i %>" class="position-absolute top-0 end-0"><i class="bi bi-arrow-right"></i></a>
+                                    <div class="card-item d-flex align-items-center">
+                                        <% let iconUrl = `http://openweathermap.org/img/w/${user[i].currentWeather.weather[0].icon}.png` %>
+                                        <img src="<%= iconUrl %>" alt="Weather Icon" class="icon_size">
+                                        <p><%= user[i].currentWeather.main.temp %>°C</p>
+                                    </div>
+                                    <p><%= user[i].timestamp %></p>
+                                </div>
+                            </li>
+                        <% } %>
+                    </ul>
+                </div>
+           </div>
+        <% } %>
+    </main>
+       
+    <footer class="mt-5">
+        <div class="container">
+            <footer class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 py-5 border-top">
+              <div class="col mb-3 d-flex align-items-center">
+                <img src="img/1705659220614eplinmpv.jpg" alt="" style="width: 70px; height: 70px; border-radius: 5px;" class="me-3">
+                <p class="mt-3 fs-5">ClimaCast</p>
+              </div>
+          
+              
+          
+              <div class="col mb-3 ffbe3f">
+                <h5>Автор</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2 text-light">Alimkhan Rulan</li>
+                </ul>
+              </div>
+          
+              <div class="col mb-3">
+                <h5>Группа</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2 text-light">SE-2201</li>
+                </ul>
+              </div>
+          
+              <div class="col mb-3">
+                <h5>Техподдержка</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2 text-light">87765084433</li>
+                </ul>
+              </div>
+            </footer>
+          </div>
+    </footer>
+
+   
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+</body>
+</html>

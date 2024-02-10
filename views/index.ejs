@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClimaCast</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    
+    <link rel="icon" type="image/png" href="/img/1705659220614eplinmpv.jpg"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,900&display=swap" rel="stylesheet"> 
+</head>
+<body>
+    <div class="loader-wrapper" id="loadingIndicator">
+        <div class="loader"></div>
+    </div>
+    <div id="weatherContainer">
+        <header class="container-fluid mb-3 mt-2">
+            <div class="">
+                <nav class="navbar navbar-expand-lg">
+                    <div class="container-fluid">
+                        <img src="/img/1705659220614eplinmpv.jpg" alt="" style="width: 70px; height: 70px; border-radius: 5px;">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon text-white"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link active text-white fs-3" aria-current="page" href="#">ClimaCast</a>
+                                </li>
+                            </ul>
+                            <form class="d-flex" action="/main" method="get" id="formCityName">
+                                <!-- <input class="form-control me-2" type="search" placeholder="City name..." aria-label="Search" id="cityName"> -->
+                                <button class="btn btn-outline-success text-white" type="submit">Go back</button>
+                            </form>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        
+    
+    
+        <main class="container-fluid">
+            <div class="container-fluid overflow-hidden">
+                <div class="row gx-5">
+                    <div class="col-3 ">
+                        <div class="row gx-5  mb-3">
+                            <div class="col">
+                                <div class="p-3 left-card card ps-4">
+                                    <p class="fs-5 fw-bold">Now</p>
+                                    <div class="wrapper ">
+                                        <p class="heading fs-1 me-5 d-flex align-items-center" id="temp"><%= weatherData.currentWeather.main.temp %></p>
+                                        <% let iconUrl = `http://openweathermap.org/img/w/${weatherData.currentWeather.weather[0].icon}.png` %>
+                                        <img src="<%=iconUrl%>" alt="mainIcon" id="mainIcon" class="icon_size d-flex align-items-center">
+                                    </div>
+                                    <p id="desc"><%= weatherData.currentWeather.weather[0].description%></p>
+                                    <div class="d-flex">
+                                        <i class="bi bi-calendar me-1"></i>
+                                        
+                                        <p id="date"><%= new Date(weatherData.currentWeather.dt * 1000).toLocaleDateString(); %></p>
+                                    </div>
+                                    <div class="d-flex">
+                                        <i class="bi bi-geo-alt me-1"></i>
+                                        <p id="name"><%= `${weatherData.currentWeather.name}, ${weatherData.currentWeather.sys.country}, [${weatherData.currentWeather.coord.lat}, ${weatherData.currentWeather.coord.lon}]`%></p>
+                                    </div>
+                                    <div class="d-flex">
+                                        <i class="bi bi-stopwatch me-1"></i>
+                                        <p id="time"><%= `${new Date(weatherData.timezone.timestamp * 1000).toLocaleTimeString()}, ${weatherData.timezone.abbreviation}` %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="fs-5 fw-semibold">5 Days Forecast</p>
+                        <div class="row gx-5">
+                            <div class="col">
+                                <div class="card left-card cont">
+                                    <ul id="forecastList">
+                                        <%
+                                        const forecastList = weatherData.forecast.list.filter((forecast, index) => index % 9 === 0).slice(0, 5);
+                                        %>
+                                        <% forecastList.forEach((forecast) => { %>
+                                            <%
+                                                const temperature = forecast.main.temp;
+                                                const date = new Date(forecast.dt * 1000);
+                                                const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
+                                            %>
+                                            <li class="'card-item d-flex align-items-center justify-content-between mx-4 mediaLi">
+                                                <div class="d-flex align-items-center">
+                                                    <span>
+                                                        <i class="bi bi-brightness-alt-high fs-2 me-2"></i>
+                                                    </span>
+                                                    <span>
+                                                        <p class="pt-3"><%= temperature%>&deg;</p>
+                                                    </span>
+                                                </div>
+                                                <p class="pt-3"><%= `${date.getDate()} ${date.toLocaleDateString('en-US', { month: 'short' })}`%></p>
+                                                <p class="pt-3"><%= dayOfWeek%></p>
+                                            </li>
+                                        <% }) %>
+                                        
+
+
+
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    
+                    <div class="col-9">
+                        <div class="row gx-5 mb-4">
+                            <div class="col">
+                                <div class="py-4 px-5 card today">
+                                    <p class="fs-5 fw-bold">Todays highlights</p>
+                                    <div class="container px-4 contt mb-3">
+                                        <div class="row gx-5 contt" >
+                                            <div class="col back me-3">
+                                                <div class="p-3">
+                                                    <div class="air d-flex mb-4 justify-content-between">
+                                                        <p>Air Quality</p>
+                                                    </div>
+                                                    <div>
+                                                        <ul class="" id="airQua">
+                                                            <li>
+                                                                <i class="bi bi-wind fs-1"></i>
+                                                            </li>
+                                                            <li>
+                                                                <p>SO2</p>
+                                                                <p id="so2"><%= weatherData.airPollution.list[0].components.so2%></p>
+                                                            </li>
+                                                            <li>
+                                                                <p>NO2</p>
+                                                                <p id="no2"><%= weatherData.airPollution.list[0].components.no2%></p>
+                                                            </li>
+                                                            <li>
+                                                                <p>O3</p>
+                                                                <p id="o3"><%= weatherData.airPollution.list[0].components.o3%></p>
+                                                            </li>
+                                                            <li>
+                                                                <p>PM2_5</p>
+                                                                <p id="pm2_5"><%= weatherData.airPollution.list[0].components.pm2_5%></p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col back ms-3">
+                                                <div class="p-3">
+                                                    <div class="mb-5">
+                                                        <p>Sunrise Sunset</p>
+                                                    </div>
+                                                    <div>
+                                                        <ul class="d-flex justify-content-between">
+                                                            <li>
+                                                                <i class="bi bi-brightness-high fs-1"></i>
+                                                            </li>
+                                                            <li>
+                                                                <p>Sunrise</p>
+                                                                <p id="sunrise"><%= new Date(weatherData.currentWeather.sys.sunrise * 1000).toLocaleTimeString()%></p>
+                                                            </li>
+                                                            <li>
+                                                                <i class="bi bi-moon fs-1"></i>
+                                                            </li>
+                                                            <li>
+                                                                <p>Sunset</p>
+                                                                <p id="sunset"><%= new Date(weatherData.currentWeather.sys.sunset * 1000).toLocaleTimeString()%></p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container px-4">
+                                        <div class="row gx-5">
+                                            <div class="col me-3">
+                                                <div class="row gx-5" >
+                                                    <div class="col back me-3 mini-cont">
+                                                        <div class="p-3">
+                                                            <p>Humidity</p>
+                                                            <ul class="d-flex justify-content-between">
+                                                                <li>
+                                                                    <i class="bi bi-droplet-half fs-2"></i>
+                                                                </li>
+                                                                <li>
+                                                                    <p class="fs-3" id="humidity"><%= `${weatherData.currentWeather.main.humidity}%`%></p>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col back ms-3 mini-cont">
+                                                        <div class="p-3">
+                                                            <p>Clouds</p>
+                                                            <ul class="d-flex justify-content-between">
+                                                                <li>
+                                                                    <i class="bi bi-cloud fs-2"></i>
+                                                                </li>
+                                                                <li>
+                                                                    <p class="fs-3" id="cloud"><%= `${weatherData.currentWeather.clouds.all}%`%></p>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col ms-3">
+                                                <div class="row gx-5" >
+                                                    <div class="col back me-3 mini-cont">
+                                                        <div class="p-3">
+                                                            <p>Wind</p>
+                                                            <ul class="d-flex justify-content-between">
+                                                                <li>
+                                                                    <i class="bi bi-wind fs-2"></i>
+                                                                </li>
+                                                                <li>
+                                                                    <p class="fs-3" id="wind"><%= `${weatherData.currentWeather.wind.speed}m/s`%></p>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col back ms-3 mini-cont">
+                                                        <div class="p-3">
+                                                            <p>Feels like</p>
+                                                            <ul class="d-flex justify-content-between">
+                                                                <li>
+                                                                    <i class="bi bi-thermometer-half fs-2"></i>
+                                                                </li>
+                                                                <li>
+                                                                    <p class="fs-3" id="feels_like"><%= `${weatherData.currentWeather.main.feels_like}`%></p>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="fs-5 fw-semibold">Forecast for the next 3 hours</p>
+                        <div class="row gx-5">
+                            <div class="col">
+                                <div class="">
+                                    <ul class="" id="times">
+                                        <%
+                                        let forecastListToday = weatherData.forecast.list.slice(0, 3);
+
+                                        %>
+                                        <% forecastListToday.forEach((forecast) => { %>
+                                            <%
+                                            const temperature = forecast.main.temp;
+                                            const date = new Date(forecast.dt * 1000);
+                                            const time = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                                            const feels_like = forecast.main.feels_like;
+                                            const wind = forecast.wind.speed;
+                                            const icon = `http://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
+                                            %>
+                                            <li class="card-item-day text-center p-2">
+                                                <!-- <p class="">${time}</p> -->
+                                                <p class=""><%= time%></p>
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="me-4">
+                                                        <img src="<%= icon%>" alt="" srcset="" class="icon_mini">
+                                                        <p class=""><%= temperature%></p>
+                                                    </div>
+                                                    <div class="ms-4">
+                                                        <i class="bi bi-wind fs-2"></i>
+                                                        <p class=""><%= wind%>m/s</p>
+                                                    </div>
+                                                    <div class="ms-4">
+                                                        <i class="bi bi-thermometer-half fs-2"></i>
+                                                        <p class=""><%= feels_like%></p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div id="map" class="map-container"></div> -->
+            <!-- <div id="map" style="height: 400px; width: 100%; border-radius: 10px;" class="mt-4"></div> -->
+    
+        </main>
+    
+        <footer class="mt-5">
+            <div class="container">
+                <footer class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 py-5 border-top">
+                  <div class="col mb-3 d-flex align-items-center">
+                    <img src="/img/1705659220614eplinmpv.jpg" alt="" style="width: 70px; height: 70px; border-radius: 5px;" class="me-3">
+                    <p class="mt-3 fs-5">ClimaCast</p>
+                  </div>
+              
+                  <div class="col mb-3 ffbe3f">
+                    <h5>Автор</h5>
+                    <ul class="nav flex-column">
+                      <li class="nav-item mb-2 text-light">Alimkhan Rulan</li>
+                    </ul>
+                  </div>
+              
+                  <div class="col mb-3">
+                    <h5>Группа</h5>
+                    <ul class="nav flex-column">
+                      <li class="nav-item mb-2 text-light">SE-2201</li>
+                    </ul>
+                  </div>
+              
+                  <div class="col mb-3">
+                    <h5>Техподдержка</h5>
+                    <ul class="nav flex-column">
+                      <li class="nav-item mb-2 text-light">87765084433</li>
+                    </ul>
+                  </div>
+                </footer>
+              </div>
+        </footer>
+    </div>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_2YSJ_KR2XolIlxk8Jl6MlLTk8ahvzWM&libraries=places"></script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="../index.js"></script>
+
+    
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClimaCast</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="icon" type="image/png" href="img/1705659220614eplinmpv.jpg"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,900&display=swap" rel="stylesheet">
+
+
+    <style>
+
+
+    </style>
+</head>
+<body>
+  
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/addUser" method="post">
+                <div class="modal-body">
+                
+                        <label for="name">User name</label>
+                        <input class="form-control" type="text" placeholder="User name..." name="username">
+                        <label for="password">Password</label>
+                        <input class="form-control" type="password" placeholder="Password..." name="password">
+                        <label for="role">Role</label>
+                        <select class="form-control" name="role">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add User</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editUserModalLabel">Edit User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editUserForm" method="post" action="/editUser">
+                    <div class="modal-body">
+                        <input type="hidden" id="editUserId" name="userId">
+                        <label for="editUsername">User name</label>
+                        <input class="form-control" type="text" placeholder="User name..." id="editUsername" name="username">
+                    
+                        <label for="editRole">Role</label>
+                        <select class="form-control" id="editRole" name="role">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container" id="userCont">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="d-flex justify-content-between mx-3">
+                    <h1 class="text-center">Users</h1>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Add User
+                    </button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">User</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(user => { %>
+                            <tr class="coll">
+                                <td scope="row"><%= user._id %></td>
+                                <td><%= user.username %></td>
+                                <td><%= user.role %></td>
+                                <td class="d-flex justify-content-around">
+                                    <button type="button" class="btn btn-warning editUserBtn" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="<%= user._id %>" data-username="<%= user.username %>"  data-role="<%= user.role %>">Edit</button>
+
+                                    <!-- <form action="/editUser/<%= user._id %>" method="post">
+                                        <button type="submit" class="btn btn-warning">Edit</button>
+                                    </form> -->
+                                    <!-- <a href="/editUser/<%= user._id %>" class="btn btn-warning">Edit</a> -->
+                                    <!-- <a href="/deleteUser/<%= user.id %>" class="btn btn-danger">Delete</a> -->
+                                    <form action="/deleteUser/<%= user._id %>" method="post">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let editButtons = document.querySelectorAll('.editUserBtn');
+    
+            editButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    let userId = button.getAttribute('data-user-id');
+                    let username = button.getAttribute('data-username');
+                    let role = button.getAttribute('data-role');
+    
+                    document.getElementById('editUserId').value = userId;
+                    document.getElementById('editUsername').value = username;
+                    document.getElementById('editRole').value = role;
+                });
+            });
+        });
+    </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
